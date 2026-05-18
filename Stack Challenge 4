@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#define M 100
+int top1=-1,top2=-1;
+int stack1[M],stack2[M];
+int n1,n2;
+void push1(int value){
+    if(top1==n1-1){
+        printf("Overflow\n");
+        return ;
+    }
+    else
+    stack1[++top1]=value;
+}
+void push2(int value){
+    if(top2==n2-1){
+        printf("Overflow\n");
+        return ;
+    }    
+    else
+        stack2[++top2]=value;
+    }
+int pop1(){
+    if(top1==-1){
+        printf("Underflow\n");
+        return -1;
+    }
+    else
+        return stack1[top1--];
+}
+int pop2(){
+    if(top2==-1){
+        printf("Underflow\n");
+        return -1;
+    }
+    else
+        return stack2[top2--];
+}
+int peek1(){
+    if(top1==-1){
+        printf("Underflow\n");
+        return -1;
+    }
+    else 
+        return stack1[top1];
+}
+int peek2(){
+    if(top2==-1){
+        printf("Underflow\n");
+        return -1;
+    }
+    else 
+        return stack2[top2];
+}
+void display1(){
+    for(int i=top1;i>=0;i--){
+        printf("%d ",stack1[i]);
+    }
+    printf("\n");
+}
+void display2(){
+    for(int i=top2;i>=0;i--){
+        printf("%d ",stack2[i]);
+    }
+    printf("\n");
+}
+int main() {
+    scanf("%d %d",&n1,&n2);
+    int q;
+    scanf("%d",&q);
+    for(int i=0;i<q;i++){
+        char str[10];
+        int stacknum,value;
+        scanf(" %s",str);
+        if(strcmp(str,"PUSH")==0){
+            scanf("%d %d ",&stacknum,&value);
+            if(stacknum==1){
+                push1(value);
+            }
+            else
+                push2(value);
+        }
+        else if(strcmp(str,"POP")==0){
+            scanf("%d ",&stacknum);
+            if(stacknum==1){
+                int val=pop1();
+                if(val!=-1){
+                    printf("%d\n",val);
+                }
+            }
+            else{
+                int val=pop2();
+                if(val!=-1){
+                    printf("%d\n",val);
+                }
+        }
+        }
+        else if(strcmp(str,"PEEK")==0){
+            scanf("%d ",&stacknum);
+            if(stacknum==1){
+                int val=peek1();
+                if(val!=-1){
+                    printf("%d\n",val);
+                }
+            }
+            else{
+                int val=peek2();
+                if(val!=-1){
+                    printf("%d\n",val);
+                }
+        }
+        }
+        else if(strcmp(str,"DISPLAY")==0){
+            scanf("%d ",&stacknum);
+            if(stacknum==1){
+                if(top1==-1){
+                    printf("Underflow\n");
+                }
+                else
+                    display1();
+                }
+            else{
+                if(top2==-1){
+                    printf("Underflow\n");
+                }
+                else
+                    display2();
+                }
+        }
+        }
+
+    return 0;
+}
