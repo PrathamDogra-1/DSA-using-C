@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#define M 100
+int list[M];
+int main() {
+    int n;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        scanf("%d ",&list[i]);
+    }
+    int pos;
+    int Insert;
+    scanf("%d",&Insert);
+    scanf("%d",&pos);
+    for(int i=n;i>pos;i--){
+        list[i]=list[i-1];
+    }
+    list[pos]=Insert;
+    n++;
+    for(int i=0;i<n;i++){
+        printf("%d ",list[i]);
+    }
+    return 0;
+}
