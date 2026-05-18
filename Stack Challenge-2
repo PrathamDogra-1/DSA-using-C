@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+int top=-1;
+int size=0;
+void push(int stack[],int n){
+    if(top==size-1){
+        printf("Overflow\n");
+        return ;
+    }
+    else{
+        stack[++top]=n;
+    }
+}
+int pop(int stack[]){
+    if(top==-1){
+        printf("Underflow\n");
+        return -1;
+    }
+    else{
+        int value=stack[top];
+        top--;
+        return value;
+    }
+}
+void display(int stack[]){
+    
+        for(int i=top;i>=0;i--){
+            printf("%d ",stack[i]);
+        }
+    
+}
+int main() {
+    scanf("%d",&size);
+    int stack[size];
+    int initial;
+    scanf("%d",&initial);
+    int n=0;
+    for(int i=0;i<initial;i++){
+        scanf("%d",&n);
+        push(stack,n);
+     }
+    for(int i=0;i<2;i++){
+        int value=pop(stack);
+        if(value !=-1)
+        printf("Popped: %d\n",value);
+    }
+    for(int i=0;i<4;i++){
+        scanf("%d",&n);
+        push(stack,n);
+    }
+    int value=pop(stack);
+    if(value !=-1)
+    printf("Popped: %d\n",value);
+    for(int i=0;i<2;i++){
+        scanf("%d",&n);
+        push(stack,n);
+     }
+    for(int i=0;i<3;i++){
+        int value=pop(stack);
+        if(value !=-1)
+        printf("Popped: %d\n",value);
+    }
+    if(top==-1){
+        printf("Stack is Empty\n");
+    }
+    else{
+        display(stack);
+    }
+    return 0;
+}
