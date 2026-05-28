@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+int operand[100];
+char operator[100];
+int top1=-1,top2=-1;
+int precedence(char ch){
+    switch(ch){
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
+        case '^':
+            return 3;
+        default:
+            return 0;
+    }
+}
+int apply(int a,int b,char op){
+    switch(op){
+        case '+':
+            return b+a;
+            break;
+        case '-':
+            return b-a;
+            break;
+        case '*':
+            return b*a;
+            break;
+        case '/':
+            return b/a;
+            break;
+        case '^':{
+            int res=1;
+            for(int i=0;i<a;i++){
+                res*=b;
+                
+            }return res;}
+        default:
+            return 0;
+               
+    }
+}
+void push(int val){
+    operand[++top1]=val;
+}
+void pushop(int val){
+    operator[++top2]=val;
+}
+int pop(){
+    return operand[top1--];
+}
+int popop(){
+    return operator[top2--];
+}
+int evaluateinfix(char* exp){
+    for(int i=0;exp[i]!='\0';i++){
+        char ch = exp[i];
+        if(isdigit(ch)){
+            int num=0;
+            while(isdigit(exp[i])){
+                num= num*10+(exp[i]-'0');
+                i++;
+            }
+            push(num);
+            i--;
+        }
+        else if(ch == ' ' || ch == '\n')
+            continue;
+        
+        else if(ch=='+' || ch=='-' || ch=='*' || ch=='/' || ch=='^'){
+            while(top2!=-1 && (precedence(ch)<=(precedence(operator[top2])&& ch!= '^'))){
+                int a = pop();
+                int b = pop();
+                char op = popop();
+                push(apply(a,b,op));
+            }
+            pushop(ch);
+        }
+        else if(ch == '('){
+            pushop(ch);
+        }
+        else if(ch == ')'){
+            while(operator[top2] != '('){
+                int a = pop();
+                int b = pop();
+                char op = popop();
+                push(apply(a,b,op));
+            }
+            popop();
+        }
+    }
+        while(top2!=-1){
+
+    int a = pop();
+    int b = pop();
+    char op = popop();
+    push(apply(a,b,op));
+    }
+    return pop();
+
+}
+int main() {
+    char exp[100];
+    scanf("%[^\n]",exp);
+    printf("%d",evaluateinfix(exp));
+    return 0;
+}
