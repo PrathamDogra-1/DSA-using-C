@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+int operand[100];
+int top1=-1;
+void push(int val){
+    operand[++top1]=val;
+}
+
+int pop(){
+    return operand[top1--];
+}
+int evaluatepostfix(char* exp){
+    for(int i=0;exp[i]!='\0';i++){
+        char ch = exp[i];
+        if(isdigit(ch)){
+            int num = 0;
+            while(isdigit(exp[i])){
+                num = num*10 + (exp[i]-'0');
+                i++;
+            }
+            push(num);
+            i--;
+        }
+        else if(ch == ' ' || ch == '\n')
+            continue;
+        else{
+            int a=pop();
+            int b=pop();
+            switch(ch){
+                case '+':
+                    push(b+a);
+                    break;
+                case '-':
+                    push(b-a);
+                    break;
+                case '*':
+                    push(b*a);
+                    break;
+                case '/':
+                    push(b/a);
+                    break;
+                case '^':{
+                    int res=1;
+                    for(int i=0;i<a;i++){
+                        res*=b;
+                    }
+                    push(res);}
+                    break;
+                }
+            }
+        }
+    return pop();
+    }
+int main() {
+    char exp[100];
+    gets(exp);
+    printf("%d",evaluatepostfix(exp));
+    return 0;
+}
