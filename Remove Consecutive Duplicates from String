@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+int main() {
+    char s[100];
+    char stack[100];
+    scanf("%s",s);
+    int top=-1;
+    for (int i=0;i<strlen(s);i++){
+        if(stack[top]==s[i]) continue;
+        else stack[++top]=s[i];
+    }
+    stack[++top]='\0';
+    printf("%s",stack);
+    return 0;
+}
