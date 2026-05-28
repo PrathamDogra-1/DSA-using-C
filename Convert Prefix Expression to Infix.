@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include<ctype.h>
+#include<string.h>
+int precedence(char op){
+    switch(op){
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+             return 2;
+        case '^':
+            return 3;
+        default:
+            return 0;
+    }
+}
+char* convertPrefixToInfix(char* prefixExp){
+    char stack[100][100];
+    int len=strlen(prefixExp),top=-1;
+    for(int i=len-1;i>=0;i--){
+        char ch=prefixExp[i];
+        if(isalnum(ch)){
+            char str[]={ch,'\0'};
+            strcpy(stack[++top],str);
+        }
+        else if(ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='^'){
+            char *s1=stack[top--];
+            char *s2=stack[top--];
+            char s3[100]="";
+            sprintf(s3,"(%s%c%s)",s1,ch,s2);
+            strcpy(stack[++top],s3);
+        }
+    }
+    char *infix=(char*)malloc(strlen(stack[top])+1);
+    strcpy(infix,stack[top--]);
+    return infix;
+}
+int main() {
+	char exp[100];
+    gets(exp);
+    printf("%s",convertPrefixToInfix(exp));
+    return 0;
+}
