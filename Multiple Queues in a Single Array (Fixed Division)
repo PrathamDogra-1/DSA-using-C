@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <string.h>
+#define size 100
+#define queue 10
+int arr[size];
+int front[queue],count[queue];
+int tsize,k,psize;
+void enqueue(int q,int val){
+    if(count[q]==psize){
+        printf("Queue Overflow\n");
+        return;
+    }
+    else{
+        int rear = (front[q]+count[q])%psize;
+        arr[q*psize+rear]=val;
+        count[q]++;
+    }
+}
+void dequeue(int q){
+    if(count[q]==0){
+        printf("Queue Underflow\n");
+        return;
+    }
+    else{
+        int idx = q*psize+front[q];
+        printf("%d\n",arr[idx]);
+        front[q]=(front[q]+1)%psize;
+        count[q]--;
+    }
+}
+void peek(int q){
+    if(count[q]==0){
+        printf("Queue Underflow\n");
+        return;
+    }
+    else{
+        int idx=q*psize+front[q];
+        printf("%d\n",arr[idx]);
+    }
+}
+void display(int q){
+    if(count[q]==0){
+        printf("Queue Underflow\n");
+        return;
+    }
+    else{
+        for(int i=0;i<count[q];i++){
+            int idx=(front[q]+i)%psize;
+            printf("%d ",arr[q*psize+idx]);
+        }
+        printf("\n");
+    }
+}
+int main(){
+    int op;
+    scanf("%d %d",&tsize,&k);
+    scanf("%d",&op);
+    psize=tsize/k;
+    for(int i=0;i<k;i++){
+        front[i]=0;
+        count[i]=0;
+    }
+    char opr[50];
+    int q,val;
+    for(int i=0;i<op;i++){
+        scanf("%s",opr);
+        if(strcmp(opr,"ENQUEUE")==0){
+            scanf("%d %d",&q,&val);
+            enqueue(q-1,val);
+        }
+        else if(strcmp(opr, "DEQUEUE") == 0){
+
+            scanf("%d", &q);
+
+            dequeue(q-1);
+        }
+
+        else if(strcmp(opr, "PEEK") == 0){
+
+            scanf("%d", &q);
+
+            peek(q-1);
+        }
+
+        else if(strcmp(opr, "DISPLAY") == 0){
+
+            scanf("%d", &q);
+
+            display(q-1);
+        }
+    }
+
+    return 0;
+}
