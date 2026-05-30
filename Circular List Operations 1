@@ -1,0 +1,201 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int value;
+    struct Node* next;
+    struct Node* prev;
+};
+
+struct Node* newNode(int value){
+    struct Node* node=(struct Node*)malloc(sizeof(struct Node));
+    node->value=value;
+    node->next=NULL;
+    node->prev=NULL;
+    return node;
+}
+
+struct Node* addEnd(struct Node* tail,int value){
+    struct Node* node=newNode(value);
+    if(tail==NULL){
+        node->next=node;
+        node->prev=node;
+        return node;
+    }
+    struct Node* head=tail->next;
+    node->next=head;
+    node->prev=tail;
+    tail->next=node;
+    head->prev=node;
+    return node;
+}
+
+struct Node* addBegin(struct Node* tail,int value){
+    struct Node* node=newNode(value);
+    if(tail==NULL){
+        node->next=node;
+        node->prev=node;
+        return node;
+    }
+    struct Node* head=tail->next;
+    node->next=head;
+    node->prev=tail;
+    tail->next=node;
+    head->prev=node;
+    return tail;
+}
+
+struct Node* addAtPos(struct Node* tail,int value,int pos){
+    if(tail==NULL || pos==1) return addBegin(tail,value);
+    int count=1;
+    struct Node* temp=tail->next;
+    while(temp!=tail){
+        count++;
+        temp=temp->next;
+    }
+    if(pos==count+1) return addEnd(tail,value);
+    struct Node* node=newNode(value);
+    temp=tail->next;
+    for(int i=1;i<pos-1;i++) temp=temp->next;
+    struct Node* next=temp->next;
+    node->next=next;
+    node->prev=temp;
+    temp->next=node;
+    next->prev=node;
+    return tail;
+}
+
+struct Node* removeValue(struct Node* tail,int value){
+    if(tail==NULL) return NULL;
+    struct Node* head=tail->next;
+    if(head==tail){
+        if(head->value==value){
+            free(head);
+            return NULL;
+        }
+        return tail;
+    }
+    struct Node* curr=head;
+    do{
+        if(curr->value==value){
+            curr->prev->next=curr->next;
+            curr->next->prev=curr->prev;
+            struct Node* newTail=(curr==tail)?curr->prev:tail;
+            free(curr);
+            return newTail;
+        }
+        curr=curr->next;
+    }while(curr!=head);
+    return tail;
+}
+
+struct Node* removeBegin(struct Node* tail){
+    if(tail==NULL) return NULL;
+    struct Node* head=tail->next;
+    if(head==tail){
+        free(head);
+        return NULL;
+    }
+    struct Node* newHead=head->next;
+    tail->next=newHead;
+    newHead->prev=tail;
+    free(head);
+    return tail;
+}
+
+struct Node* removeEnd(struct Node* tail){
+    if(tail==NULL) return NULL;
+    struct Node* head=tail->next;
+    if(head==tail){
+        free(tail);
+        return NULL;
+    }
+    struct Node* newTail=tail->prev;
+    newTail->next=head;
+    head->prev=newTail;
+    free(tail);
+    return newTail;
+}
+
+void search(struct Node* tail,int value){
+    if(tail==NULL){
+        printf("-1\n");
+        return;
+    }
+    struct Node* temp=tail->next;
+    int pos=1;
+    do{
+        if(temp->value==value){
+            printf("%d\n",pos);
+            return;
+        }
+        temp=temp->next;
+        pos++;
+    }while(temp!=tail->next);
+    printf("-1\n");
+}
+
+void printForward(struct Node* tail){
+    if(tail==NULL){
+        printf("EMPTY\n");
+        return;
+    }
+    struct Node* temp=tail->next;
+    do{
+        if(temp!=tail->next) printf(" ");
+        printf("%d",temp->value);
+        temp=temp->next;
+    }while(temp!=tail->next);
+    printf("\n");
+}
+
+void printReverse(struct Node* tail){
+    if(tail==NULL){
+        printf("EMPTY\n");
+        return;
+    }
+    struct Node* temp=tail;
+    do{
+        if(temp!=tail) printf(" ");
+        printf("%d",temp->value);
+        temp=temp->prev;
+    }while(temp!=tail);
+    printf("\n");
+}
+
+void count(struct Node* tail){
+    if(tail==NULL){
+        printf("0\n");
+        return;
+    }
+    int c=1;
+    struct Node* temp=tail->next;
+    while(temp!=tail){
+        c++;
+        temp=temp->next;
+    }
+    printf("%d\n",c);
+}
+
+int main(){
+    int q;
+    scanf("%d",&q);
+    struct Node* tail=NULL;
+    int code,x,p;
+    for(int i=0;i<q;i++){
+        scanf("%d",&code);
+        switch(code){
+            case 1: scanf("%d",&x); tail=addEnd(tail,x); break;
+            case 2: scanf("%d",&x); tail=addBegin(tail,x); break;
+            case 3: scanf("%d %d",&x,&p); tail=addAtPos(tail,x,p); break;
+            case 4: scanf("%d",&x); tail=removeValue(tail,x); break;
+            case 5: tail=removeBegin(tail); break;
+            case 6: tail=removeEnd(tail); break;
+            case 7: scanf("%d",&x); search(tail,x); break;
+            case 8: printForward(tail); break;
+            case 9: printReverse(tail); break;
+            case 10: count(tail); break;
+        }
+    }
+    return 0;
+}
