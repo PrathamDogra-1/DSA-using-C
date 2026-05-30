@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+int n,front=-1,rear=-1;
+int isfull(){
+    return rear == n-1;
+}
+int isempty(){
+    return front==-1;
+}
+void enqueue(int queue[],int val){
+    if(isfull()){
+        printf("Queue Overflow\n");
+    return;}
+    else{
+        queue[++rear]=val;
+        if(front ==-1)
+            front =rear;
+    }
+}
+int dequeue(int queue[]){
+    if(isempty()){
+        printf("Queue Underflow\n");
+        return -1;}
+    else{
+        int val=queue[front++];
+        if(front>rear)
+            front=rear=-1;
+        return val;
+    }
+}
+int peek(int queue[]){
+    if(isempty()){
+        printf("Queue Underflow\n");
+        return -1;
+    }
+    else{
+        return queue[front];
+    }
+}
+void display(int queue[]){
+    if(isempty()){
+        printf("Queue Underflow\n");
+        return;
+    }
+    else{
+        for(int i=front;i<=rear;i++){
+            printf("%d ",queue[i]);
+        }
+        printf("\n");
+    }
+}
+int main() {
+    scanf("%d",&n);
+    int queue[n];
+    int q;
+    scanf("%d",&q);
+    for(int i=0;i<q;i++){
+        int choice;
+        scanf("%d",&choice);
+        switch(choice){
+            case 1:{
+                int value;
+                scanf("%d",&value);
+                enqueue(queue,value);}
+                break;
+            case 2:{
+                int val=dequeue(queue);
+                if(val!=-1)
+                    printf("%d\n",val);}
+                break;
+            case 3:{
+                int val=peek(queue);
+                if(val!=-1)
+                    printf("%d\n",val);}
+                break;
+            
+            case 4:
+                if(isempty()){
+                    printf("Queue is Empty\n");
+                }
+                else
+                    display(queue);
+        }
+    }
+    return 0;
+}
