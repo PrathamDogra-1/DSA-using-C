@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+struct Node{
+    struct Node* prev;
+    int data;
+    struct Node* next;
+};
+struct Node* head = NULL;
+struct Node* tail = NULL;
+struct Node* createnode(int data){
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data= data;
+    temp->prev=temp->next = NULL;  
+    return temp;
+};
+void insertatbeg(int data){
+    struct Node* newnode=createnode(data);
+    if(head==NULL && tail==NULL){
+        head=tail=newnode;
+    }
+    else{
+        newnode->next=head;
+        head->prev=newnode;
+        head=newnode;
+    }
+}
+void insertatend(int data){
+    struct Node* newnode=createnode(data);
+    if(head==NULL && tail==NULL){
+        head=tail=newnode;
+    }
+    else{
+        tail->next=newnode;
+        newnode->prev=tail;
+        tail=newnode;
+    }
+}
+void display(){
+    if(head==NULL){
+        printf("Empty\n");
+    }
+    struct Node* temp=head;
+    while(temp!=NULL){
+        printf("%d ",temp->data);
+        temp=temp->next;
+    }
+}
+int main() {
+    int n;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        int val;
+        scanf("%d",&val);
+        insertatend(val);
+    }
+    int val;
+    scanf("%d",&val);
+    insertatbeg(val);
+    scanf("%d",&val);
+    insertatend(val);
+    display();
+    return 0;
+}
