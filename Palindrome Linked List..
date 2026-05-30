@@ -1,0 +1,78 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+struct node{
+    int data;
+    struct node* next;
+};
+struct node* head=NULL;
+struct node* createnode(int data){
+    struct node* temp=(struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->next=NULL;
+    return temp;
+}
+void insertatend(int val){
+    struct node* newnode=createnode(val);
+    if(head==NULL)
+        head=newnode;
+    else{
+        struct node* temp=head;
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=newnode;
+    }
+}
+void reverse(){
+    struct node* curr=head;
+    struct node* prev=NULL;
+    struct node* next=NULL;
+    while(curr!=NULL){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    head=prev;
+}
+int main() {
+    int n;
+    scanf("%d",&n);
+    int arr1[1000],arr2[1000],x=0,y=0;
+    for(int i=0;i<n;i++){
+        int val;
+        scanf("%d",&val);
+        insertatend(val);
+        arr1[x++]=val;
+    }
+    reverse();
+    struct node* temp=head;
+    while(temp!=NULL){
+        arr2[y++]=temp->data;
+        temp=temp->next;
+    }
+    int flag=1;
+    for(int i=0;i<n;i++){
+            if(arr1[i]!=arr2[i]){
+                flag=0;break;
+            }
+    }
+    if(flag==1){
+        printf("Palindrome : ");
+        for(int i=0;i<n;i++){
+            printf("%d ",arr2[i]);
+        }
+    }
+    else{
+        printf("Not Palindrome : ");
+        for(int i=0;i<n;i++){
+            printf("%d ",arr2[i]);
+        }
+    }
+    return 0;
+}
