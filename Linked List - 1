@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+struct node{
+    int data;
+    struct node* next;
+};
+struct node* head= NULL;
+struct node* createnode(int val){
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data=val;
+    temp->next=NULL;
+    return temp;
+}
+void insertatbeg(int val){
+    struct node* newnode=createnode(val);
+    if(head==NULL)
+        head= newnode;
+    else{
+        newnode->next=head;
+        head=newnode;
+    }
+}
+void insertatend(int val){
+    struct node* newnode = createnode(val);
+    if(head==NULL)
+        insertatbeg(val);
+    else{
+        struct node* temp=head;
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=newnode;
+    }
+}
+void insertatanypos(int pos,int val){
+    struct node* newnode=createnode(val);
+    if(pos==0)
+        insertatbeg(val);
+    else{
+        struct node* temp=head;
+        int i=0;
+        while(temp!=NULL){
+            if(i==pos-1)
+                break;
+            temp=temp->next;
+            i++;
+        }
+    
+    if(temp==NULL)
+        printf("Invalid position\n");
+    else{
+        newnode->next=temp->next;
+        temp->next=newnode;
+    }
+    }
+}
+void deletefrompos(int pos){
+    if(pos==0){
+        head=head->next;
+    return;
+    }
+    else{
+        struct node* temp=head;
+        int i=0;
+        while(temp!=NULL){
+            if(i==pos-1)
+                break;
+            temp=temp->next;
+            i++;
+        }
+        temp->next=temp->next->next;
+    }
+}
+void display(){
+    struct node* temp=head;
+    while(temp!=NULL){
+        printf("%d ",temp->data);
+        temp=temp->next;
+    }
+}
+int main() {
+    int n;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        int val;
+        scanf("%d",&val);
+        insertatend(val);
+    }
+    int val;
+    scanf("%d",&val);
+    insertatbeg(val);
+    int pos;
+    scanf("%d",&pos);
+    deletefrompos(pos-1);
+    scanf("%d",&val);
+    insertatend(val);
+    scanf("%d",&pos);
+    scanf("%d",&val);
+    insertatanypos(pos-1,val);
+    display();
+    return 0;
+}
