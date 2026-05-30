@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#define M 100
+int queue[M];
+int front =-1,rear =-1;
+void enqueue(int value){
+    queue[++rear]=value;
+    if(front==-1){
+        front =rear;
+    }
+}
+int dequeue(){
+    return queue[front++];
+}
+int queue_size(){
+    return rear - front + 1;
+}
+int stack[M];
+int top=-1;
+void push(int value){
+    stack[++top]=value;
+}
+int pop(){
+    return stack[top--];
+}
+int main() {
+    int n;  
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
+        int val;
+        scanf("%d",&val);
+        enqueue(val);
+    }
+    int sandwhich[M];
+    for(int i=0;i<n;i++){
+        scanf("%d ",&sandwhich[i]);
+    }
+    for(int i=n-1;i>=0;i--){
+        push(sandwhich[i]);
+    }
+    int flag=0;
+    while(front<=rear && top!=-1){
+        if(queue[front]==stack[top]){
+            dequeue();
+            pop();
+            flag = 0;
+        }
+        else{
+            enqueue(dequeue());
+            flag++;
+        }
+        if(flag == queue_size()){
+        break;
+    }
+    }
+    printf("%d",queue_size());
+    
+    return 0;
+}
