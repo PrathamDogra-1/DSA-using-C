@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_URL 105
+#define MAX_Q 10005
+
+char backStack[MAX_Q][MAX_URL];
+char forwardStack[MAX_Q][MAX_URL];
+int backTop=-1;
+int forwardTop=-1;
+
+char currentPage[MAX_URL];
+
+void visit(char* url){
+    strcpy(backStack[++backTop],currentPage);
+    forwardTop=-1;
+    strcpy(currentPage,url);
+}
+
+void goBack(){
+    if(backTop==-1){
+        printf("%s\n",currentPage);
+        return;
+    }
+    strcpy(forwardStack[++forwardTop],currentPage);
+    strcpy(currentPage,backStack[backTop--]);
+    printf("%s\n",currentPage);
+}
+
+void goForward(){
+    if(forwardTop==-1){
+        printf("%s\n",currentPage);
+        return;
+    }
+    strcpy(backStack[++backTop],currentPage);
+    strcpy(currentPage,forwardStack[forwardTop--]);
+    printf("%s\n",currentPage);
+}
+
+void show(){
+    printf("%s\n",currentPage);
+}
+
+int main(){
+    int q;
+    scanf("%d\n",&q);
+    strcpy(currentPage,"home.com");
+    char line[MAX_URL+10];
+    char cmd[10],url[MAX_URL];
+    for(int i=0;i<q;i++){
+        fgets(line,sizeof(line),stdin);
+        line[strcspn(line,"\n")]='\0';
+        if(strncmp(line,"VISIT",5)==0){
+            sscanf(line,"%s %s",cmd,url);
+            visit(url);
+        }else if(strcmp(line,"BACK")==0){
+            goBack();
+        }else if(strcmp(line,"FORWARD")==0){
+            goForward();
+        }else if(strcmp(line,"CURRENT")==0){
+            show();
+        }
+    }
+    return 0;
+}
