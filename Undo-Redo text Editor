@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 10005
+
+char textStack[MAX];
+char redoStack[MAX];
+int textTop=-1;
+int redoTop=-1;
+
+void type(char ch){
+    textStack[++textTop]=ch;
+    redoTop=-1;
+}
+
+void undo(){
+    if(textTop==-1) return;
+    redoStack[++redoTop]=textStack[textTop--];
+}
+
+void redo(){
+    if(redoTop==-1) return;
+    textStack[++textTop]=redoStack[redoTop--];
+}
+
+void print(){
+    for(int i=0;i<=textTop;i++) printf("%c",textStack[i]);
+    printf("\n");
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    int op;
+    char ch;
+    for(int i=0;i<n;i++){
+        scanf("%d",&op);
+        switch(op){
+            case 1: scanf(" %c",&ch); type(ch); break;
+            case 2: undo(); break;
+            case 3: redo(); break;
+            case 4: print(); break;
+        }
+    }
+    return 0;
+}
