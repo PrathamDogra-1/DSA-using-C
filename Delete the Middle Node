@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+struct Node{
+    int data;
+    struct Node* next;
+};
+struct Node* head=NULL;
+struct Node* createNode(int data){
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = NULL;
+    return temp;
+}
+void insertNodeAtEnd(int data){
+    struct Node * newNode = createNode(data);
+    if(head == NULL){
+        head = newNode;
+    }
+    else{
+        struct Node* temp = head;
+        while(temp->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+void deleteNodeFromAnyPos(int pos){
+    if(head == NULL)
+        printf("EMPTY\n");
+    else if(pos == 0)
+        head = head->next;
+    else{
+        struct Node* temp =  head;
+        int i = 0;
+        while(temp != NULL){
+            if(i == pos-1)
+                break;
+            temp = temp->next;
+            i++;
+        }
+        if(temp == NULL || temp->next == NULL)
+            printf("Invalid position !!!\n");
+        else{
+            temp->next = temp->next->next;
+        }
+    }
+}
+void displayList(){
+    if(head==NULL){
+        printf("EMPTY\n");
+    }
+    else{
+        struct Node* temp = head;
+        while(temp != NULL){
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+    }
+}
+int main() {
+    int n;
+    scanf("%d",&n);
+    for(int j=0;j<n;j++){
+        int val;
+        scanf("%d",&val);
+        insertNodeAtEnd(val);
+    }
+    int ch=n/2;
+    deleteNodeFromAnyPos(ch);
+    displayList();
+    return 0;
+}
