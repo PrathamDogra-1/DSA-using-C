@@ -1,0 +1,32 @@
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
+#include <stdbool.h>
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    int tickets[n];
+    for(int i=0;i<n;i++){
+        scanf("%d ",&tickets[i]);
+    }
+    int p,time=0;
+    scanf("%d",&p);
+    while(1){
+        for(int i=0;i<n;i++){
+            if(tickets[i]>0){
+                tickets[i]--;
+                time++;
+                
+                if(i==p && tickets[i]==0){
+                    printf("%d\n",time);
+                    return 0;
+                }
+            }
+        }
+    }
+    return 0;
+}
