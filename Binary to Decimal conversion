@@ -1,0 +1,17 @@
+#include<stdio.h>
+#include<math.h>
+
+int main(){
+    int num,pos=0,sum=0;
+    printf("Enter Number: ");
+    scanf("%d",&num);
+    int temp = num;
+    while(num!=0){
+        int rem = num%10;
+            sum = sum + rem*pow(2,pos);
+            pos++;
+            num = num/10;
+    }
+    printf("Decimal of %d is %d", temp,sum);
+    return 0;
+}
