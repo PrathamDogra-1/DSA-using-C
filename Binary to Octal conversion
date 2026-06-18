@@ -1,0 +1,29 @@
+#include<stdio.h>
+
+int convertBinarytoOctal(int num){
+    int dec=0,base=1;
+    while(num!=0){
+        int rem = num%10;
+            dec+= rem*base;
+            base*=2;
+            num/=10;
+    }
+    return dec;
+}
+int main(){
+    int num;
+    printf("Enter Binary Number: ");
+    scanf("%d",&num);
+    int oct=0,place=1;
+    int temp = num;
+    while(num!=0){
+        int rem = num%1000;
+        int c = convertBinarytoOctal(rem);
+            oct+= c*place;
+            place*=10;
+            num/=1000;
+    }
+    printf("Octal of %d is %d", temp,oct);
+
+    return 0;
+}
