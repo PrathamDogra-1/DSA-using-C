@@ -1,0 +1,15 @@
+#include<stdio.h>
+int main(){
+    int num,oct=0,place=1;
+    printf("Enter Number: ");
+    scanf("%d",&num);
+    int temp = num;
+    while(num!=0){
+        int rem = num%8;
+            oct = oct + rem*place;
+            num = num/8;
+            place = place*10;
+    }
+    printf("Binary of %d is %d", temp,oct);
+    return 0;
+}
