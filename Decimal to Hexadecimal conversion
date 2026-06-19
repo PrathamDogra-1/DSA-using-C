@@ -1,0 +1,45 @@
+#include<stdio.h>
+#include<string.h>
+
+int main() {
+    int n;
+    char hexa[100],rhexa[100];
+    printf("Enter Number: ");
+    scanf("%d",&n);
+    int temp = n;
+    while(n!=0){
+        int rem = n%16;
+        char str[2];
+          if(rem>=0 && rem<=9){
+              sprintf(str,"%d",rem);
+          }
+          else if(rem==10){
+              str[0]='A';
+          }
+          else if(rem==11){
+              str[0]='B';
+          }
+          else if(rem==12){
+              str[0]='C';
+          }
+          else if(rem==13){
+              str[0]='D';
+          }
+          else if(rem==14){
+              str[0]='E';
+          }
+          else if(rem==15){
+              str[0]='F';
+          }
+              str[1]='\0';
+              strcat(hexa,str);
+              n=n/16;
+    }
+    int k=0;
+        for(int i=strlen(hexa)-1;i>=0;i--){
+            rhexa[k++]=hexa[i];
+        }
+        rhexa[k]='\0';
+          printf("Hexa Decimal of %d is %s",temp,rhexa);
+    return 0;
+}
