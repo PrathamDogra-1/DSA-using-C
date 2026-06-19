@@ -1,0 +1,226 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+struct Node* head=NULL;
+struct Node* tail=NULL;
+
+struct Node* createNode(int data){
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = temp->prev = NULL;
+    return temp;
+}
+void insertNodeInBeg(int data){
+   struct Node* newNode = createNode(data);
+   if(head==NULL && tail==NULL){
+        head = tail = newNode;
+   }
+   else{
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+   }
+   printf("Node Inserted in beginning\n");
+}
+void insertNodeAtEnd(int data){
+   struct Node* newNode = createNode(data);
+   if(head==NULL && tail==NULL){
+    head = tail = newNode;
+   }
+   else{
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
+   }
+   printf("Node Inserted at End\n");
+}
+void insertNodeAtAnyPos(int data, int pos){ // here position is 0-base
+    if(head==NULL && tail==NULL && pos==0){
+        struct Node* newNode = createNode(data);
+        head = tail = newNode;
+        printf("Node Inserted at position %d\n",pos);
+    }
+    else{
+        struct Node* temp = head;
+        int i=0;
+        while(temp!=NULL){
+            if(i==pos){
+                break;
+            temp = temp->next;
+            i++; 
+            }
+        }
+        if(temp==NULL && i!=pos){
+            printf("Invalid Position\n");
+        }
+        else if(i==pos){
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+            printf("Node Inserted at position %d\n",pos);
+        }
+        else{
+            struct Node* newNode = createNode(data);
+            temp->prev->next = newNode;
+            newNode->prev = temp->prev;
+            temp->prev = newNode;
+            newNode->next = temp;
+            printf("Node Inserted at position %d\n",pos);
+        }
+    }
+}
+void deleteNodeFromBeg(){
+   if(head==NULL && tail==NULL){
+    printf("List is Empty\n");
+   }
+   else if(head==tail){
+    head = tail = NULL;
+    printf("Node deleted from beginning\n");
+   }
+   else{
+    //struct Node* delNode = head;
+    head = head->next;
+    //free(delNode);
+    printf("Node deleted from beginning\n");
+   }
+}
+void deleteNodeFromEnd(){
+    if(head==NULL && tail==NULL){
+    printf("List is Empty\n");
+   }
+   else if(head==tail){
+    head = tail = NULL;
+    printf("Node deleted from end\n");
+   }
+   else{
+    //struct Node* delNode = tail;
+    tail->prev->next = NULL;
+    tail = tail->prev;
+    //free(delNode);
+    printf("Node deleted from end\n");
+   }
+}
+void deleteNodeFromAnyPos(int pos){ // Here position is 0 base
+    if(head==NULL && tail==NULL && pos==0){
+        printf("List is Empty\n");
+    }
+    else if(pos==0){
+        deleteNodeFromBeg();
+    }
+    else{
+        struct Node* temp = head;
+        int i=0;
+        while(temp!= NULL && i!=pos){
+            temp = temp->next;
+            i++;
+        }
+        if(temp==NULL){
+            printf("Invalid Position\n");
+        }
+        else{
+            temp->prev->next = temp->next;
+            if(temp->next!=NULL){
+                temp->next->prev = temp->prev;
+            }
+            else{
+                tail = temp->prev;
+                printf("Node deleted from the given position %d\n",pos);
+            }
+        }
+    }
+}
+void search(int value){
+    if(head == NULL && tail == NULL){
+        printf("List is empty !!!\n");
+    }
+    else{
+        struct Node* temp = head;
+        while(temp != NULL){
+            if(temp->data == value){
+                printf("Found\n");
+                return;
+            }
+            temp = temp->next;
+        }
+        printf("Not Found !!!\n");
+    }
+}
+void displayList(){
+    if(head == NULL && tail == NULL){
+        printf("List is empty !!!\n");
+    }
+    else{
+        struct Node* temp = head;
+        while(temp != NULL){
+            printf("%d ", temp->data);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+int main(){
+    while(1){
+        printf("\n***** Doubly Linked List *****\n");
+        printf("1. Insert In Begining\n");
+        printf("2. Insert At End\n");
+        printf("3. Insert At Specified Position\n");
+        printf("4. Detele From Begining\n");
+        printf("5. Delete From End\n");
+        printf("6. Delete From Specified Position\n");
+        printf("7. Display List\n");
+        printf("8. Search Element In List\n");
+        printf("9. Exit\n");
+        int choice, data, pos;
+        printf("Enter Choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter Data: ");
+                scanf("%d", &data);
+                insertNodeInBeg(data);
+                break;
+            case 2:
+                printf("Enter Data: ");
+                scanf("%d", &data);
+                insertNodeAtEnd(data);
+                break;
+            case 3:
+                printf("Enter Position: ");
+                scanf("%d", &pos);
+                printf("Enter Data: ");
+                scanf("%d", &data);
+                insertNodeAtAnyPos(data, pos);
+                break;
+            case 4:
+                deleteNodeFromBeg();
+                break;
+            case 5:
+                deleteNodeFromEnd();
+                break;
+            case 6:
+                printf("Enter Position: ");
+                scanf("%d", &pos);
+                deleteNodeFromAnyPos(pos);
+                break;
+            case 7:
+               displayList();
+               break;
+            case 8:
+                printf("Enter Searching Element: ");
+                scanf("%d", &data);
+                search(data);
+                break;
+            case 9:
+                exit(0);
+                break;
+            default:
+                printf("Invalid Choice !!!!!\n");
+        }
+    }
+    return 0;
+}
